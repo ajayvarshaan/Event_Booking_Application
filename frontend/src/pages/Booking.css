@@ -1,0 +1,147 @@
+.booking-container {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: #f5f7fa;
+}
+
+.booking-container h1 {
+  font-size: 42px;
+  color: #2d3748;
+  margin-bottom: 40px;
+  text-align: center;
+  font-weight: 800;
+}
+
+.booking-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.event-info {
+  background: white;
+  border-radius: 12px;
+  padding: 35px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e1e8ed;
+}
+
+.event-info img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 25px;
+}
+
+.event-info h2 {
+  font-size: 32px;
+  margin-bottom: 18px;
+  color: #2d3748;
+  font-weight: 800;
+}
+
+.event-info p {
+  color: #4a5568;
+  line-height: 1.7;
+  margin-bottom: 25px;
+  font-size: 16px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  padding: 25px 0;
+  border-top: 2px solid #e1e8ed;
+  border-bottom: 2px solid #e1e8ed;
+}
+
+.info-grid div {
+  font-size: 15px;
+  color: #2d3748;
+  font-weight: 600;
+}
+
+.booking-form {
+  background: white;
+  padding: 35px;
+  height: fit-content;
+  border: 1px solid #e1e8ed;
+}
+
+.booking-form h3 {
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: #2d3748;
+  font-weight: 800;
+}
+
+.form-group {
+  margin-bottom: 30px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 700;
+  color: #2d3748;
+  font-size: 15px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #2d3748;
+}
+
+.form-group small {
+  display: block;
+  margin-top: 8px;
+  color: #718096;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.price-summary {
+  background: #f7fafc;
+  padding: 25px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  border: 1px solid #e1e8ed;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 15px;
+  color: #4a5568;
+  font-weight: 600;
+}
+
+.summary-row.total {
+  border-top: 2px solid #cbd5e0;
+  padding-top: 15px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #2d3748;
+}
+
+.summary-row.total span:last-child {
+  color: #667eea;
+}
+
+@media (max-width: 768px) {
+  .booking-content {
+    grid-template-columns: 1fr;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
