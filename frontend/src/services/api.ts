@@ -25,11 +25,12 @@ interface Event {
 
 interface Booking {
   _id: string;
-  event: Event;
+  event: Event | null;
   user: string;
   seats: number;
   totalPrice: number;
   status: string;
+  createdAt: string;
 }
 
 interface Activity {

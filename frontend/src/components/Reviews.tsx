@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { reviewAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
-import { staggerFadeIn, bounceInColorful, glowEffect } from '../animations/gsapAnimations';
+import { staggerFadeIn, bounceInColorful } from '../animations/gsapAnimations';
 import './Reviews.css';
 
 interface Review {
@@ -21,7 +21,7 @@ interface ReviewsProps {
 }
 
 const Reviews: React.FC<ReviewsProps> = ({ eventId }) => {
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [averageRating, setAverageRating] = useState(0);
   const [totalReviews, setTotalReviews] = useState(0);

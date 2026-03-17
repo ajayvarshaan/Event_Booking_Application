@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { bookingAPI } from '../services/api';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import gsap from 'gsap';
 import './Dashboard.css';
 
@@ -46,7 +45,6 @@ interface DashboardStats {
 }
 
 const Dashboard: React.FC = () => {
-  const { user } = useAuth();
   const [userBookingStats, setUserBookingStats] = useState<UserBookingStat[]>([]);
   const [canceledBookingStats, setCanceledBookingStats] = useState<CanceledBookingStat[]>([]);
   const [dashboardStats, setDashboardStats] = useState<DashboardStats>({
@@ -310,7 +308,7 @@ const Dashboard: React.FC = () => {
                         <div className="event-header">
                           <h5>{event.eventTitle}</h5>
                           <span className="booking-date">
-                            {new Date(activeTab === 'active' ? event.bookingDate : event.canceledDate).toLocaleDateString()}
+                            {new Date('bookingDate' in event ? event.bookingDate : event.canceledDate).toLocaleDateString()}
                           </span>
                         </div>
                         <div className="event-details">

@@ -165,6 +165,76 @@ export const pageTransition = (): gsap.core.Timeline => {
   return tl;
 };
 
+export const revealRouteShell = (element: HTMLElement | null): void => {
+  if (!element) return;
+  gsap.fromTo(
+    element,
+    { opacity: 0, y: 24 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.65,
+      ease: 'power3.out',
+      clearProps: 'transform,opacity'
+    }
+  );
+};
+
+export const animateFloatingDock = (element: HTMLElement | null): void => {
+  if (!element) return;
+  gsap.fromTo(
+    element,
+    { opacity: 0, y: 40, scale: 0.92 },
+    {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 0.7,
+      ease: 'back.out(1.4)'
+    }
+  );
+};
+
+export const animateDockItems = (elements: HTMLElement[] | NodeListOf<Element>): void => {
+  if (!elements || elements.length === 0) return;
+  gsap.fromTo(
+    elements,
+    { opacity: 0, y: 16 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.45,
+      stagger: 0.08,
+      ease: 'power2.out'
+    }
+  );
+};
+
+export const dockHoverLift = (element: HTMLElement | null): void => {
+  if (!element) return;
+
+  const onEnter = () => {
+    gsap.to(element, {
+      y: -6,
+      scale: 1.04,
+      duration: 0.2,
+      ease: 'power2.out'
+    });
+  };
+
+  const onLeave = () => {
+    gsap.to(element, {
+      y: 0,
+      scale: 1,
+      duration: 0.2,
+      ease: 'power2.out'
+    });
+  };
+
+  element.addEventListener('mouseenter', onEnter);
+  element.addEventListener('mouseleave', onLeave);
+};
+
 export const textReveal = (element: HTMLElement | null, staggerDelay: number = 0.03): void => {
   if (!element) return;
   const text = element.textContent || '';

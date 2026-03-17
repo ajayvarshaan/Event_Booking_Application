@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { wishlistAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
-import { pulseWithColor, glowEffect } from '../animations/gsapAnimations';
+import { pulseWithColor } from '../animations/gsapAnimations';
 import './WishlistButton.css';
 
 interface WishlistButtonProps {
   eventId: string;
-  onWishlistChange?: (isInWishlist: boolean) => void;
+  onWishlistChange?: (eventId: string, isInWishlist: boolean) => void;
 }
 
 const WishlistButton: React.FC<WishlistButtonProps> = ({ eventId, onWishlistChange }) => {
@@ -30,7 +30,9 @@ const WishlistButton: React.FC<WishlistButtonProps> = ({ eventId, onWishlistChan
   const checkWishlist = async () => {
     try {
       const response = await wishlistAPI.check(eventId);
-      setIsInWishlist(response.data.isInWishlist);
+      const nextState = response.data.isInWishlist;
+      setIsInWishlist(nextState);
+      onWishlistChange?.(eventId, nextState);
     } catch (error) {
       console.error('Failed to check wishlist:', error);
     }
@@ -41,14 +43,16 @@ const WishlistButton: React.FC<WishlistButtonProps> = ({ eventId, onWishlistChan
 
     setLoading(true);
     try {
+      let nextState = isInWishlist;
       if (isInWishlist) {
         await wishlistAPI.remove(eventId);
-        setIsInWishlist(false);
+        nextState = false;
       } else {
         await wishlistAPI.add(eventId);
-        setIsInWishlist(true);
+        nextState = true;
       }
-      onWishlistChange?.(isInWishlist);
+      setIsInWishlist(nextState);
+      onWishlistChange?.(eventId, nextState);
     } catch (error) {
       console.error('Failed to update wishlist:', error);
     } finally {

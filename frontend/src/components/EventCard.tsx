@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import Countdown from './Countdown';
+import WishlistButton from './WishlistButton';
 import './EventCard.css';
 
 interface EventCardProps {
@@ -20,10 +21,22 @@ interface EventCardProps {
   onBook: (eventId: string) => void;
   onDelete?: (eventId: string) => void;
   onEdit?: (eventId: string) => void;
+  onWishlistChange?: (eventId: string, isInWishlist: boolean) => void;
+  onToggleCompare?: (event: EventCardProps['event']) => void;
+  isCompared?: boolean;
   isAdmin?: boolean;
 }
 
-const EventCard: React.FC<EventCardProps> = ({ event, onBook, onDelete, onEdit, isAdmin }) => {
+const EventCard: React.FC<EventCardProps> = ({
+  event,
+  onBook,
+  onDelete,
+  onEdit,
+  onWishlistChange,
+  onToggleCompare,
+  isCompared,
+  isAdmin
+}) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [key, setKey] = useState(0);
 
@@ -84,6 +97,9 @@ const EventCard: React.FC<EventCardProps> = ({ event, onBook, onDelete, onEdit, 
           </div>
         )}
         <img src={event.image} alt={event.title} className="event-image" />
+        <div className="wishlist-overlay">
+          <WishlistButton eventId={event._id} onWishlistChange={onWishlistChange} />
+        </div>
       </div>
       
       <h3>{event.title}</h3>
@@ -122,11 +138,29 @@ const EventCard: React.FC<EventCardProps> = ({ event, onBook, onDelete, onEdit, 
       
       <div className="event-actions">
         {!isAdmin ? (
-          <button className="btn-primary w-full" onClick={() => onBook(event._id)}>
-            Book Now
-          </button>
+          <>
+            {onToggleCompare && (
+              <button
+                className={`btn-secondary compare-btn ${isCompared ? 'active' : ''}`}
+                onClick={() => onToggleCompare(event)}
+              >
+                {isCompared ? 'Compared' : 'Compare'}
+              </button>
+            )}
+            <button className="btn-primary" onClick={() => onBook(event._id)}>
+              Book Now
+            </button>
+          </>
         ) : (
           <>
+            {onToggleCompare && (
+              <button
+                className={`btn-secondary compare-btn ${isCompared ? 'active' : ''}`}
+                onClick={() => onToggleCompare(event)}
+              >
+                {isCompared ? 'Compared' : 'Compare'}
+              </button>
+            )}
             <button className="btn-primary" onClick={() => onBook(event._id)}>
               Book Now
             </button>

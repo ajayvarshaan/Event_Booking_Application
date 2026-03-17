@@ -15,7 +15,9 @@ export const addToWishlist = async (req: AuthRequest, res: Response): Promise<vo
         events: [eventId]
       });
     } else {
-      if (!wishlist.events.includes(eventId)) {
+      const alreadyInWishlist = wishlist.events.some(id => id.toString() === eventId);
+
+      if (!alreadyInWishlist) {
         wishlist.events.push(eventId);
         await wishlist.save();
       }
@@ -73,7 +75,7 @@ export const isInWishlist = async (req: AuthRequest, res: Response): Promise<voi
     const userId = req.user?._id;
 
     const wishlist = await Wishlist.findOne({ user: userId });
-    const isInWishlist = wishlist?.events.includes(eventId) || false;
+    const isInWishlist = wishlist?.events.some(id => id.toString() === eventId) || false;
 
     res.json({ isInWishlist });
   } catch (error: any) {
