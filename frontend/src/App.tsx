@@ -7,6 +7,7 @@ import PublicRoute from './components/PublicRoute';
 import Chatbot from './components/Chatbot';
 import { useAuth } from './context/AuthContext';
 import { pageTransition, revealRouteShell } from './animations/gsapAnimations';
+import CustomCursor from './components/CustomCursor';
 
 const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./pages/Login'));
@@ -187,6 +188,7 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <CustomCursor />
         <div className="page-transition"></div>
         <AppShell />
       </Router>

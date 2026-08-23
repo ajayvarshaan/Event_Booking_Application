@@ -1005,26 +1005,29 @@ const Home: React.FC = () => {
               }}
               className="search-input"
             />
-            {isAuthenticated && (
-              <button
-                className={`ai-search-toggle ${isAiSearch ? 'active' : ''}`}
-                onClick={() => {
-                  setIsAiSearch((prev) => !prev);
-                  setAiSearchExplanation('');
-                  setAiSearchEventIds([]);
-                }}
-                title={isAiSearch ? 'Switch to keyword search' : 'Try AI-powered search'}
+            <div className="search-controls">
+              {isAuthenticated && (
+                <button
+                  className={`ai-search-toggle ${isAiSearch ? 'active' : ''}`}
+                  onClick={() => {
+                    setIsAiSearch((prev) => !prev);
+                    setAiSearchExplanation('');
+                    setAiSearchEventIds([]);
+                  }}
+                  title={isAiSearch ? 'Switch to keyword search' : 'Try AI-powered search'}
+                >
+                  <FaRobot style={{ marginRight: '4px' }} /> AI Search
+                </button>
+              )}
+              <button 
+                className={`refresh-btn ${loading || aiSearchLoading ? 'spinning' : ''}`} 
+                onClick={isAiSearch ? handleAiSearch : refreshEvents}
+                title={isAiSearch ? 'Run AI search' : 'Refresh events'}
               >
-                <FaRobot style={{ marginRight: '4px' }} /> AI
+                {isAiSearch ? (aiSearchLoading ? <FaClock /> : <FaMagic />) : <FaSync className={loading ? 'spin-icon' : ''} />}
+                <span>{isAiSearch ? 'Search' : 'Refresh'}</span>
               </button>
-            )}
-            <button 
-              className="refresh-btn" 
-              onClick={isAiSearch ? handleAiSearch : refreshEvents}
-              title={isAiSearch ? 'Run AI search' : 'Refresh events'}
-            >
-              {isAiSearch ? (aiSearchLoading ? <FaClock /> : <FaMagic />) : <FaSync />}
-            </button>
+            </div>
           </div>
           
           {aiSearchExplanation && (

@@ -792,3 +792,51 @@ export const shimmerSweep = (element: HTMLElement | null): void => {
     }
   );
 };
+
+export const animateItemRemove = (element: HTMLElement | null, onComplete?: () => void): void => {
+  if (!element) return;
+  gsap.to(element, {
+    opacity: 0,
+    scale: 0.8,
+    y: -20,
+    duration: 0.35,
+    ease: 'power2.in',
+    onComplete
+  });
+};
+
+export const animateModalOpen = (modalContentEl: HTMLElement | null): void => {
+  if (!modalContentEl) return;
+  gsap.fromTo(
+    modalContentEl,
+    { opacity: 0, scale: 0.8, y: 40, rotationX: 15 },
+    {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      rotationX: 0,
+      duration: 0.5,
+      ease: 'back.out(1.5)',
+      transformPerspective: 1000
+    }
+  );
+};
+
+export const animateSuccessCheck = (element: HTMLElement | null): void => {
+  if (!element) return;
+  gsap.fromTo(
+    element,
+    { scale: 0, rotation: -90, opacity: 0 },
+    {
+      scale: 1.2,
+      rotation: 0,
+      opacity: 1,
+      duration: 0.6,
+      ease: 'elastic.out(1.2, 0.4)',
+      onComplete: () => {
+        gsap.to(element, { scale: 1, duration: 0.2, ease: 'power2.out' });
+      }
+    }
+  );
+};
+

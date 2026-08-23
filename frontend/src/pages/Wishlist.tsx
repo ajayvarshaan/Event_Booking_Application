@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import EventCard from '../components/EventCard';
 import { wishlistAPI } from '../services/api';
+import gsap from 'gsap';
 import './Wishlist.css';
 
 interface Event {
@@ -22,6 +23,8 @@ const Wishlist: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const headerRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const fetchWishlist = async () => {
     try {
@@ -39,13 +42,51 @@ const Wishlist: React.FC = () => {
     fetchWishlist();
   }, []);
 
+  useEffect(() => {
+    if (!loading) {
+      if (headerRef.current) {
+        gsap.fromTo(headerRef.current,
+          { opacity: 0, y: -40, scale: 0.95 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'back.out(1.5)' }
+        );
+      }
+      if (gridRef.current) {
+        const cards = gridRef.current.children;
+        if (cards.length > 0) {
+          gsap.fromTo(cards,
+            { opacity: 0, y: 50, rotationY: -15, scale: 0.9 },
+            {
+              opacity: 1, y: 0, rotationY: 0, scale: 1,
+              duration: 0.7, stagger: 0.12, ease: 'back.out(1.6)',
+              transformPerspective: 900
+            }
+          );
+        }
+      }
+    }
+  }, [loading, events.length]);
+
   const handleBook = (eventId: string) => {
     navigate(`/book/${eventId}`);
   };
 
   const handleWishlistChange = (eventId: string, isInWishlist: boolean) => {
     if (!isInWishlist) {
-      setEvents((prev) => prev.filter((event) => event._id !== eventId));
+      const cardEl = document.getElementById(`wishlist-card-${eventId}`);
+      if (cardEl) {
+        gsap.to(cardEl, {
+          opacity: 0,
+          scale: 0.8,
+          y: -30,
+          duration: 0.35,
+          ease: 'power2.in',
+          onComplete: () => {
+            setEvents((prev) => prev.filter((event) => event._id !== eventId));
+          }
+        });
+      } else {
+        setEvents((prev) => prev.filter((event) => event._id !== eventId));
+      }
     }
   };
 
@@ -56,7 +97,7 @@ const Wishlist: React.FC = () => {
   return (
     <div className="wishlist-page">
       <div className="container">
-        <div className="wishlist-header">
+        <div className="wishlist-header" ref={headerRef}>
           <span className="wishlist-header-kicker">❤️ Saved Events</span>
           <h1>My Wishlist</h1>
           <p>Your hand-picked events, saved in one beautiful place.</p>
@@ -72,14 +113,15 @@ const Wishlist: React.FC = () => {
             </Link>
           </div>
         ) : (
-          <div className="wishlist-grid">
+          <div className="wishlist-grid" ref={gridRef}>
             {events.map((event) => (
-              <EventCard
-                key={event._id}
-                event={event}
-                onBook={handleBook}
-                onWishlistChange={handleWishlistChange}
-              />
+              <div id={`wishlist-card-${event._id}`} key={event._id}>
+                <EventCard
+                  event={event}
+                  onBook={handleBook}
+                  onWishlistChange={handleWishlistChange}
+                />
+              </div>
             ))}
           </div>
         )}
